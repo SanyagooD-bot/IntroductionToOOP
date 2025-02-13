@@ -1,6 +1,7 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.Article.Article;
+import org.skypro.skyshop.Article.BestResultNotFound;
 import org.skypro.skyshop.Article.SearchEngine;
 import org.skypro.skyshop.Article.Searchable;
 //import org.skypro.skyshop.basket.ProductBasket;
@@ -33,28 +34,18 @@ public class App {
             searchEngine.add(article3);
 
             // Демонстрация поиска
-            System.out.println("Результаты поиска по запросу 'молоко':");
-            Searchable[] results = searchEngine.search("молоко");
-            for (Searchable result : results) {
-                if (result != null) {
-                    System.out.println(result.getStringRepresentation());
-                }
+            try {
+                Searchable bestMatch = searchEngine.findBestMatch("молоко");
+                System.out.println("Найден лучший результат: " + bestMatch.getStringRepresentation());
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
             }
 
-            System.out.println("\nРезультаты поиска по запросу 'хлеб':");
-            results = searchEngine.search("хлеб");
-            for (Searchable result : results) {
-                if (result != null) {
-                    System.out.println(result.getStringRepresentation());
-                }
-            }
-
-            System.out.println("\nРезультаты поиска по запросу 'сок':");
-            results = searchEngine.search("сок");
-            for (Searchable result : results) {
-                if (result != null) {
-                    System.out.println(result.getStringRepresentation());
-                }
+            try {
+                Searchable bestMatch = searchEngine.findBestMatch("несуществующий запрос");
+                System.out.println("Найден лучший результат: " + bestMatch.getStringRepresentation());
+            } catch (BestResultNotFound e) {
+                System.out.println(e.getMessage());
             }
         }
     }

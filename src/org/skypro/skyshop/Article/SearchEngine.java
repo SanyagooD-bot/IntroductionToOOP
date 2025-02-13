@@ -9,7 +9,6 @@ public class SearchEngine {
         size = 0;
     }
 
-    // Метод для добавления объекта в поисковый движок
     public void add(Searchable searchable) {
         if (size < searchables.length) {
             searchables[size] = searchable;
@@ -19,23 +18,36 @@ public class SearchEngine {
         }
     }
 
-    // Метод для поиска
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int count = 0;
+    public Searchable findBestMatch(String search) throws BestResultNotFound {
+        Searchable bestMatch = null;
+        int maxCount = 0;
 
-        query = query.toLowerCase(); // Приводим запрос к нижнему регистру
+        search = search.toLowerCase();
 
         for (Searchable searchable : searchables) {
-            if (searchable != null && searchable.getSearchTerm().contains(query)) {
-                results[count] = searchable;
-                count++;
-                if (count == 5) {
-                    break; // Прерываем поиск после нахождения 5 результатов
+            if (searchable != null) {
+                String term = searchable.getSearchTerm();
+                int count = countOccurrences(term, search);
+                if (count > maxCount) {
+                    maxCount = count;
+                    bestMatch = searchable;
                 }
             }
         }
+        if (bestMatch == null) {
+            throw new BestResultNotFound("Не найдено подходящего результата для запроса: " + search);
+        }
 
-        return results;
+        return bestMatch;
+    }
+
+    private int countOccurrences(String term, String search) {
+        int count = 0;
+        int index = term.indexOf(search);
+        while (index != -1) {
+            count++;
+            index = term.indexOf(search, index + 1);
+        }
+        return count;
     }
 }
