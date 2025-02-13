@@ -1,4 +1,4 @@
-package org.skypro.skyshop.Article;
+package org.skypro.skyshop.Search;
 
 public interface Searchable {
     // Метод для получения термина поиска

@@ -1,21 +1,29 @@
-package org.skypro.skyshop.Article;
+package org.skypro.skyshop.Search;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchEngine {
-    private final Searchable[] searchables;
-    private int size;
+    private final List<Searchable> searchables;
 
-    public SearchEngine(int capacity) {
-        searchables = new Searchable[capacity];
-        size = 0;
+    public SearchEngine() {
+        searchables = new ArrayList<>();
     }
 
     public void add(Searchable searchable) {
-        if (size < searchables.length) {
-            searchables[size] = searchable;
-            size++;
-        } else {
-            System.out.println("Поисковый движок переполнен!");
+        searchables.add(searchable);
+    }
+
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new ArrayList<>();
+        query = query.toLowerCase();
+
+        for (Searchable searchable : searchables) {
+            if (searchable.getSearchTerm().contains(query)) {
+                results.add(searchable);
+            }
         }
+        return results;
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
@@ -25,15 +33,14 @@ public class SearchEngine {
         search = search.toLowerCase();
 
         for (Searchable searchable : searchables) {
-            if (searchable != null) {
-                String term = searchable.getSearchTerm();
-                int count = countOccurrences(term, search);
-                if (count > maxCount) {
-                    maxCount = count;
-                    bestMatch = searchable;
-                }
+            String term = searchable.getSearchTerm();
+            int count = countOccurrences(term, search);
+            if (count > maxCount) {
+                maxCount = count;
+                bestMatch = searchable;
             }
         }
+
         if (bestMatch == null) {
             throw new BestResultNotFound("Не найдено подходящего результата для запроса: " + search);
         }
@@ -51,3 +58,4 @@ public class SearchEngine {
         return count;
     }
 }
+
