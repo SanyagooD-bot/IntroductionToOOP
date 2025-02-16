@@ -9,12 +9,12 @@ public class FixPriceProduct extends Product {
 
     @Override
     public double getPrice() {
-        return FIXED_PRICE; // Возвращаем фиксированную цену
+        return FIXED_PRICE;
     }
 
     @Override
     public boolean isSpecial() {
-        return true; // Товар с фиксированной ценой является специальным
+        return true;
     }
 
     @Override
