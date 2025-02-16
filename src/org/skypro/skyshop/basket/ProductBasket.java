@@ -2,43 +2,43 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 
 public class ProductBasket {
-    private final List<Product> products;
+    private final Map<String, List<Product>> productsMap;
 
     public ProductBasket() {
-        products = new ArrayList<>();
+        productsMap = new HashMap<>();
     }
 
     public void addProduct(Product product) {
+        // Получаем список продуктов по имени
+        List<Product> products = productsMap.getOrDefault(product.getName(), new ArrayList<>());
+        // Добавляем продукт в список
         products.add(product);
+        // Обновляем Map
+        productsMap.put(product.getName(), products);
     }
 
     public List<Product> removeProductsByName(String name) {
-        List<Product> removedProducts = new ArrayList<>();
-        products.removeIf(product -> {
-            if (product.getName().equals(name)) {
-                removedProducts.add(product);
-                return true;
-            }
-            return false;
-        });
-        return removedProducts;
+        // Удаляем список продуктов по имени и возвращаем его
+        return productsMap.remove(name);
     }
 
     public void printBasket() {
-        if (products.isEmpty()) {
+        if (productsMap.isEmpty()) {
             System.out.println("Корзина пуста.");
             return;
         }
 
         double total = 0.0;
-        for (Product product : products) {
-            System.out.println(product);
-            total += product.getPrice();
+        // Перебираем все значения (списки продуктов) в Map
+        for (List<Product> products : productsMap.values()) {
+            // Перебираем каждый продукт в списке
+            for (Product product : products) {
+                System.out.println(product);
+                total += product.getPrice();
+            }
         }
         System.out.println("Итого: " + total + " руб.");
     }
