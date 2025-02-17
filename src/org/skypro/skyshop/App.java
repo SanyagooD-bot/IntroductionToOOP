@@ -42,9 +42,7 @@ public class App {
             List<Product> removedProducts = basket.removeProductsByName("Хлеб");
             if (removedProducts != null && !removedProducts.isEmpty()) {
                 System.out.println("Удаленные продукты:");
-                for (Product product : removedProducts) {
-                    System.out.println(product);
-                }
+                removedProducts.forEach(System.out::println);
             } else {
                 System.out.println("Список пуст.");
             }
@@ -58,9 +56,7 @@ public class App {
             removedProducts = basket.removeProductsByName("Вода");
             if (removedProducts != null && !removedProducts.isEmpty()) {
                 System.out.println("Удаленные продукты:");
-                for (Product product : removedProducts) {
-                    System.out.println(product);
-                }
+                removedProducts.forEach(System.out::println);
             } else {
                 System.out.println("Список пуст.");
             }
@@ -81,21 +77,15 @@ public class App {
             // Демонстрация поиска
             System.out.println("\nРезультаты поиска по запросу 'молоко':");
             Set<Searchable> results = searchEngine.search("молоко");
-            for (Searchable result : results) {
-                System.out.println(result.getStringRepresentation());
-            }
+            results.forEach(result -> System.out.println(result.getStringRepresentation()));
 
             System.out.println("\nРезультаты поиска по запросу 'хлеб':");
             results = searchEngine.search("хлеб");
-            for (Searchable result : results) {
-                System.out.println(result.getStringRepresentation());
-            }
+            results.forEach(result -> System.out.println(result.getStringRepresentation()));
 
             System.out.println("\nРезультаты поиска по запросу 'сок':");
             results = searchEngine.search("сок");
-            for (Searchable result : results) {
-                System.out.println(result.getStringRepresentation());
-            }
+            results.forEach(result -> System.out.println(result.getStringRepresentation()));
 
             // Демонстрация поиска лучшего результата
             try {
