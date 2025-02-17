@@ -11,7 +11,8 @@ import org.skypro.skyshop.Search.BestResultNotFound;
 import org.skypro.skyshop.basket.ProductBasket;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+
 public class App {
 
     public static class Main {
@@ -79,21 +80,21 @@ public class App {
 
             // Демонстрация поиска
             System.out.println("\nРезультаты поиска по запросу 'молоко':");
-            Map<String, Searchable> results = searchEngine.search("молоко");
-            for (Map.Entry<String, Searchable> entry : results.entrySet()) {
-                System.out.println(entry.getValue().getStringRepresentation());
+            Set<Searchable> results = searchEngine.search("молоко");
+            for (Searchable result : results) {
+                System.out.println(result.getStringRepresentation());
             }
 
             System.out.println("\nРезультаты поиска по запросу 'хлеб':");
             results = searchEngine.search("хлеб");
-            for (Map.Entry<String, Searchable> entry : results.entrySet()) {
-                System.out.println(entry.getValue().getStringRepresentation());
+            for (Searchable result : results) {
+                System.out.println(result.getStringRepresentation());
             }
 
             System.out.println("\nРезультаты поиска по запросу 'сок':");
             results = searchEngine.search("сок");
-            for (Map.Entry<String, Searchable> entry : results.entrySet()) {
-                System.out.println(entry.getValue().getStringRepresentation());
+            for (Searchable result : results) {
+                System.out.println(result.getStringRepresentation());
             }
 
             // Демонстрация поиска лучшего результата

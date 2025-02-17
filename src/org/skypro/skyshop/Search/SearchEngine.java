@@ -3,23 +3,23 @@ package org.skypro.skyshop.Search;
 import java.util.*;
 
 public class SearchEngine {
-    private final List<Searchable> searchables;
+    private final Set<Searchable> searchables;
 
     public SearchEngine() {
-        searchables = new ArrayList<>();
+        searchables = new HashSet<>(); // Используем HashSet для хранения уникальных элементов
     }
 
     public void add(Searchable searchable) {
-        searchables.add(searchable);
+        searchables.add(searchable); // Добавляем элемент в Set (дубликаты игнорируются)
     }
 
-    public Map<String, Searchable> search(String query) {
-        Map<String, Searchable> results = new TreeMap<>(); // TreeMap для автоматической сортировки по ключам
+    public Set<Searchable> search(String query) {
+        Set<Searchable> results = new TreeSet<>(new SearchableComparator()); // Используем TreeSet с компаратором
         query = query.toLowerCase();
 
         for (Searchable searchable : searchables) {
             if (searchable.getSearchTerm().contains(query)) {
-                results.put(searchable.getName(), searchable);
+                results.add(searchable);
             }
         }
         return results;
