@@ -12,16 +12,10 @@ public class ProductBasket {
     }
 
     public void addProduct(Product product) {
-        // Получаем список продуктов по имени
-        List<Product> products = productsMap.getOrDefault(product.getName(), new ArrayList<>());
-        // Добавляем продукт в список
-        products.add(product);
-        // Обновляем Map
-        productsMap.put(product.getName(), products);
+        productsMap.computeIfAbsent(product.getName(), k -> new ArrayList<>()).add(product);
     }
 
     public List<Product> removeProductsByName(String name) {
-        // Удаляем список продуктов по имени и возвращаем его
         return productsMap.remove(name);
     }
 
@@ -31,16 +25,32 @@ public class ProductBasket {
             return;
         }
 
-        double total = 0.0;
-        // Перебираем все значения (списки продуктов) в Map
-        for (List<Product> products : productsMap.values()) {
-            // Перебираем каждый продукт в списке
-            for (Product product : products) {
-                System.out.println(product);
-                total += product.getPrice();
-            }
-        }
+        // Вывод всех продуктов
+        productsMap.values().stream()
+                .flatMap(List::stream)
+                .forEach(System.out::println);
+
+        // Вывод общей стоимости
+        double total = getTotalPrice();
         System.out.println("Итого: " + total + " руб.");
+
+        // Вывод количества специальных товаров
+        int specialCount = getSpecialCount();
+        System.out.println("Специальных товаров: " + specialCount);
+    }
+
+    private double getTotalPrice() {
+        return productsMap.values().stream()
+                .flatMap(List::stream)
+                .mapToDouble(Product::getPrice)
+                .sum();
+    }
+
+    private int getSpecialCount() {
+        return (int) productsMap.values().stream()
+                .flatMap(List::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 }
 
